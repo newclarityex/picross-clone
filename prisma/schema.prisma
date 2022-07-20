@@ -13,11 +13,9 @@ datasource db {
 }
 
 model Level {
-    id          String   @id @default(cuid())
-    name        String
-    description String?
-    createdAt   DateTime @default(now())
-    data        Json
-    size        Int
-    stars       Int
+    id        String   @id @default(cuid())
+    name      String
+    createdAt DateTime @default(now())
+    data      Json
+    stars     Int      @default(0)
 }
