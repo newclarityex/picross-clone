@@ -142,23 +142,25 @@ const Board = (props: {
     return (
         <>
             <div>
-                <table className="relative">
+                <table className="relative bg-sky-700 my-4">
                     <tbody>
                         <tr>
                             <td></td>
                             {yClues?.map((clue, i) => {
-                                return <td className={`text-2xl transition-colors font-semibold text-center align-bottom ${yCluesFullfilled[i] ? 'text-green-500' : 'text-red-500'}`} key={`yClue-${i}`}>
+                                return <td className={`text-2xl transition-colors font-semibold text-center align-bottom bg-sky-900 border-l-2 border-slate-900 ${yCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`} key={`yClue-${i}`}>
                                     {clue.map((count, j) =>
-                                        <div key={`yClue-${i}-${j}`}>{count}</div>
+                                        <div key={`yClue-${i}-${j}`} className='w-12 h-12 grid place-items-center'>
+                                            <div>{count}</div></div>
                                     )}
                                 </td>;
                             })}
                         </tr>
                         {grid.map((row, i) => {
                             return <tr className="relative" key={`row-${i}`}>
-                                <td className={`text-2xl transition-colors font-semibold align-middle text-right ${xCluesFullfilled[i] ? 'text-green-500' : 'text-red-500'}`}>
+                                <td className={`text-2xl transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 border-t-2 border-slate-900 ${xCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}>
                                     {xClues?.[i]?.map((count, j) =>
-                                        <span key={`xClue-${i}-${j}`} className="mx-2">{count}</span>
+                                        <div key={`xClue-${i}-${j}`} className="h-12 w-12 grid place-items-center">
+                                            <div>{count}</div></div>
                                     )}
                                 </td>
                                 {row.map((color, j) => {
@@ -166,7 +168,7 @@ const Board = (props: {
                                     if (row === undefined) return null;
                                     const cell = row[j];
                                     if (cell === undefined) return null;
-                                    return <td key={`cell-${i}-${j}`} className={`w-12 h-12 ${styles.block} ${!cell.selected || completed ? '' : styles.selected} border-[1px] border-gray-600`} style={{ backgroundColor: (completed && cell.value) ? cell.value : '' }}
+                                    return <td key={`cell-${i}-${j}`} className={`w-12 h-12 ${styles.block} ${!cell.selected || completed ? '' : styles.selected} border-b-2 border-r-2 border-slate-700`} style={{ backgroundColor: (completed && cell.value) ? cell.value : '' }}
                                         onPointerOver={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerOver(event, i, j)}
                                         onPointerDown={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerDown(event, i, j)}
                                     >
