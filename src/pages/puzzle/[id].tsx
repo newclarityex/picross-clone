@@ -23,7 +23,7 @@ const Puzzle: NextPage = () => {
                 {levelData === null && <div className="text-center text-4xl font-semibold">Loading...</div>}
             </div>
             <div className="flex flex-col justify-evenly items-center">
-                <header className="font-semibold text-4xl">"{data?.name}"</header>
+                <header className="font-semibold text-4xl">&quot;{data?.name}&quot;</header>
                 <h2 className="font-semibold text-3xl">Size: {`${grid.length || 0}x${grid[0]?.length || 0}`}</h2>
                 <div className="flex flex-col lg:flex-row items-center">
                     <button className="w-56 text-center font-semibold border-2 border-black py-2 text-xl bg-gray-300">Browse Puzzles</button>
