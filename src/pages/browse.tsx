@@ -45,7 +45,7 @@ const Puzzle: NextPage = () => {
         }
     })
     const table = useReactTable({
-        data: arr?.concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]).concat([...arr]) || [],
+        data: arr || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
