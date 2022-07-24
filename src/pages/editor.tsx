@@ -103,7 +103,7 @@ const Editor: NextPage = () => {
             </Head>
             {nameModalOpen && <div className="absolute h-full w-full grid place-items-center z-40 bg-black/80">
                 <form className="absolute z-10 p-4 flex flex-col items-center bg-gray-200 border-2 border-black" onSubmit={handleSubmit}>
-                    <button className="absolute top-0  right-2 text-2xl" onClick={() => setNameModalOpen(false)}>x</button>
+                    <button className="absolute top-0 right-2 text-2xl" onClick={() => setNameModalOpen(false)}>x</button>
                     <h2 className="font-semibold text-2xl">Submit Puzzle</h2>
                     <br />
                     <input className="block p-2 border-2 border-black text-center text-xl" type="text" placeholder="Name" required value={name} onChange={(event) => setName(event.target.value)} />

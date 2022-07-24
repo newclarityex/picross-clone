@@ -10,8 +10,10 @@ interface Cell {
 
 const Board = (props: {
     levelData: Level | null;
+    size: number;
 } = {
         levelData: null,
+        size: 1000
     }) => {
 
     const generateEmptyGrid = (grid: (string | null)[][]): Cell[][] => {
@@ -26,9 +28,12 @@ const Board = (props: {
     const [grid, setGrid] = useState<Cell[][]>([]);
     const [completed, setCompleted] = useState(false);
     const [pointerFill, setPointerFill] = useState(null as boolean | null);
-    const [clues, setClues] = useState<number[][][]>([[], []]);
+    const [clues, setClues] = useState<[number[][], number[][]]>([[], []]);
     const xClues = clues[0];
     const yClues = clues[1];
+    const totalWidth = xClues.length + grid.length;
+    const totalHeight = yClues.length + grid.length;
+    const cellSize = props.size / Math.max(totalWidth, totalHeight);
 
     useEffect(() => {
         const newGrid = generateEmptyGrid(props.levelData?.data as (string | null)[][] || []);
@@ -60,7 +65,7 @@ const Board = (props: {
         return clue;
     }
 
-    const generateClues = (grid: boolean[][]) => {
+    const generateClues = (grid: boolean[][]): [number[][], number[][]] => {
         if (grid.length === 0) {
             return [[], []];
         }
@@ -147,28 +152,28 @@ const Board = (props: {
                         <tr>
                             <td></td>
                             {yClues?.map((clue, i) => {
-                                return <td className={`text-2xl transition-colors font-semibold text-center align-bottom bg-sky-900 border-l-2 border-slate-900 ${yCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`} key={`yClue-${i}`}>
+                                return <th className={`text-2xl transition-colors font-semibold text-center align-bottom bg-sky-900 ${yCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`} key={`yClue-${i}`}>
                                     {clue.map((count, j) =>
-                                        <div key={`yClue-${i}-${j}`} className='w-12 h-12 grid place-items-center'>
+                                        <div key={`yClue-${i}-${j}`} className='grid place-items-center' style={{ width: cellSize, height: cellSize }}>
                                             <div>{count}</div></div>
                                     )}
-                                </td>;
+                                </th>;
                             })}
                         </tr>
                         {grid.map((row, i) => {
                             return <tr className="relative" key={`row-${i}`}>
-                                <td className={`text-2xl transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 border-t-2 border-slate-900 ${xCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}>
+                                <th className={`text-2xl transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 ${xCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}>
                                     {xClues?.[i]?.map((count, j) =>
-                                        <div key={`xClue-${i}-${j}`} className="h-12 w-12 grid place-items-center">
+                                        <div key={`xClue-${i}-${j}`} className="grid place-items-center" style={{ width: cellSize, height: cellSize }}>
                                             <div>{count}</div></div>
                                     )}
-                                </td>
+                                </th>
                                 {row.map((color, j) => {
                                     const row = grid[i];
                                     if (row === undefined) return null;
                                     const cell = row[j];
                                     if (cell === undefined) return null;
-                                    return <td key={`cell-${i}-${j}`} className={`w-12 h-12 ${styles.block} ${!cell.selected || completed ? '' : styles.selected} border-b-2 border-r-2 border-slate-700`} style={{ backgroundColor: (completed && cell.value) ? cell.value : '' }}
+                                    return <td key={`cell-${i}-${j}`} className={`${styles.block} ${!cell.selected || completed ? '' : styles.selected}`} style={{ backgroundColor: (completed && cell.value) ? cell.value : '', width: cellSize, height: cellSize }}
                                         onPointerOver={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerOver(event, i, j)}
                                         onPointerDown={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerDown(event, i, j)}
                                     >

@@ -43,4 +43,16 @@ export const levelRouter = createRouter()
                 }
             ))[0] || null;
         }
+    })
+    .query("fetchAll", {
+        async resolve({ ctx }) {
+            return await ctx.prisma.level.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    createdAt: true,
+                    stars: true,
+                }
+            });
+        }
     });

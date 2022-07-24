@@ -9,7 +9,15 @@ html, body, #__next {
     user-select: none;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid grey; 
+}
+
 table, tbody, tr, td {
     padding: 0;
-    box-sizing: border-box;
+    border-collapse: collapse;
 }
