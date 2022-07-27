@@ -94,7 +94,6 @@ const Puzzle: NextPage = () => {
                 () => table.nextPage()
             }>Next Page</button>
             <div>Page {table.getState().pagination.pageIndex + 1}</div>
-
         </div>
     </>
 }

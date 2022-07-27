@@ -10,15 +10,14 @@ const Editor: NextPage = () => {
     const [selectedColor, setSelectedColor] = useState('#dddddd');
     const [width, setWidth] = useState(5);
     const [height, setHeight] = useState(5);
+    const [cellSize, setCellSize] = useState(500 / Math.max(width, height));
 
     const createEmptyGrid = (width: number, height: number): (string | null)[][] => {
         return new Array(height).fill(new Array(width).fill(null))
     }
 
     const [grid, setGrid] = useState(createEmptyGrid(width, height));
-    const [gridOpacity, setGridOpacity] = useState(1);
     useEffect(() => {
-        setGridOpacity(0);
         const newGrid = [];
         for (let i = 0; i < height; i++) {
             const newRow = [];
@@ -31,9 +30,7 @@ const Editor: NextPage = () => {
             newGrid.push(newRow);
         }
         setGrid(newGrid as (string | null)[][]);
-        setTimeout(() => {
-            setGridOpacity(1);
-        }, 10);
+        setCellSize(500 / Math.max(width, height))
     }, [width, height]);
 
     const changeCell = (y: number, x: number, value: string | null) => {
@@ -43,8 +40,6 @@ const Editor: NextPage = () => {
         const newGrid = [...grid];
         newGrid[y]![x] = value;
         setGrid(newGrid);
-        console.log(newGrid);
-
     }
 
     const [isFilling, setIsFilling] = useState(false);
@@ -114,13 +109,6 @@ const Editor: NextPage = () => {
             <div className="h-full flex flex-col items-center justify-center">
                 <header className="py-8 px-8 font-semibold text-5xl mb-20 text-center">Custom Puzzle</header>
                 <div className="flex flex-row justify-between items-center w-96">
-                    {/* {colors.map((color, i) => (
-                        <button key={i} className={`relative w-8 h-8 lg:w-12 lg:h-12 border-4 rounded-xl ${selectedColor === i ? 'border-white/50' : 'border-black/20'}`} style={{ backgroundColor: color }} onClick={
-                            () => setSelectedColor(i)
-                        }>
-                            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full ${selectedColor === i ? 'bg-white' : ''}`}></div>
-                        </button>
-                    ))} */}
                     <button className="relative w-8 h-8 lg:w-12 lg:h-12 border-2 border-black bg-gray-200">
                         <div className="w-full h-full" style={{ backgroundColor: selectedColor === null ? '' : selectedColor }} onClick={() => setPickerOpen(!pickerOpen)}></div>
                         {pickerOpen && <BlockPicker className="absolute top-14 left-1/2 -translate-x-1/2 z-10" onChangeComplete={handleChangeComplete} color={selectedColor} />}
@@ -142,19 +130,17 @@ const Editor: NextPage = () => {
                         </button>
                     </div>
 
-
-
                     <button className="text-xl font-semibold border-2 border-black w-8 h-8 lg:w-12 lg:h-12 bg-gray-300"
                         onClick={() => setGrid(createEmptyGrid(width, height))}
                     > ⟳
                     </button>
                 </div>
-                <table className="relative my-20" style={{ 'opacity': gridOpacity, 'transition': gridOpacity ? 'opacity 0.5s' : '' }}>
+                <table className="relative my-20">
                     <tbody>
                         {grid.map((row, i) =>
                             <tr key={`row-${i}`}>
                                 {row.map((cell, j) => (
-                                    <td key={`cell-${i}-${j}`} className={`w-12 h-12 border-[1px] border-gray-600 relative`} style={{ backgroundColor: cell !== null ? cell : 'rgba(25, 25, 25, 1)' }}
+                                    <td key={`cell-${i}-${j}`} className={`border-[1px] border-gray-600 relative`} style={{ backgroundColor: cell !== null ? cell : 'rgba(25, 25, 25, 1)', width: cellSize, height: cellSize }}
                                         onPointerOver={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerOver(event, i, j)}
                                         onPointerDown={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerDown(event, i, j)}
                                     ></td>
