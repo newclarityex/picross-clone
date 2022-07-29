@@ -11,7 +11,6 @@ export const levelRouter = createRouter()
         resolve: async ({ ctx, input }) => {
             const { name, data } = input;
             const level = await ctx.prisma.level.create({
-                // @ts-ignore
                 data: {
                     name,
                     data: data as Prisma.JsonArray,
@@ -38,21 +37,50 @@ export const levelRouter = createRouter()
             const skip = Math.floor(Math.random() * levelCount);
             return (await ctx.prisma.level.findMany(
                 {
+                    where: {
+                        unlisted: false,
+                    },
                     take: 1,
                     skip,
                 }
             ))[0] || null;
         }
     })
-    .query("fetchAll", {
-        async resolve({ ctx }) {
-            return await ctx.prisma.level.findMany({
+    .query("fetchInfinite", {
+        input: z.object({
+            limit: z.number().min(1).max(100).nullish(),
+            cursor: z.number().nullish()
+        }),
+        async resolve({ ctx, input }) {
+            const limit = input.limit ?? 50;
+            const { cursor } = input;
+            const items = await ctx.prisma.level.findMany({
+                take: limit + 1, // get an extra item at the end which we'll use as next cursor
+                where: {
+                    unlisted: false,
+                },
                 select: {
                     id: true,
+                    index: true,
                     name: true,
                     createdAt: true,
                     stars: true,
-                }
-            });
+                },
+                cursor: cursor ? { index: cursor } : undefined,
+                orderBy: {
+                    index: 'asc',
+                },
+            })
+
+            let nextCursor: typeof cursor | null = null;
+            if (items.length > limit) {
+                const nextItem = items.pop()
+                nextCursor = nextItem!.index;
+            }
+
+            return {
+                items: items.map(item => ({ id: item.id, name: item.name, createdAt: item.createdAt, stars: item.stars })),
+                nextCursor,
+            };
         }
     });
