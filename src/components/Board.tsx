@@ -43,6 +43,10 @@ const Board = (props: {
         setClues(generateClues(newGrid.map(row => row.map(cell => cell.value === null ? false : true))));
     }, [props.levelData]);
 
+    useEffect(() => {
+        checkClues();
+    }, [clues]);
+
     const clueFromArray = (array: boolean[]) => {
         const clue = [];
         let count = 0;
@@ -89,7 +93,6 @@ const Board = (props: {
         const newYCluesFullfilled = newYClues!.map((clues, i) => clues.length === (yClues as any)[i].length && clues.every((clue, j) => clue === (yClues as any)[i][j]));
         setXCluesFullfilled(newXCluesFullfilled);
         setYCluesFullfilled(newYCluesFullfilled);
-
     }
 
     const validateGrid = () => {
@@ -140,8 +143,7 @@ const Board = (props: {
     useEffect(() => {
         window.addEventListener("pointerup", () => {
             setPointerFill(null);
-        }
-            , { once: true });
+        }, { once: true });
     }, []);
 
     return (
