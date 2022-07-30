@@ -50,11 +50,8 @@ const Puzzle: NextPage = () => {
             <title>Browse Puzzles</title>
             <meta name="description" content="A simple Picross clone." />
         </Head>
-        <div className="h-full w-full flex flex-col items-center overflow-y-auto" onScroll={handleScroll}>
+        <div className="w-full flex flex-col items-center overflow-y-auto" onScroll={handleScroll}>
             <h1 className="text-4xl font-semibold my-16">Puzzle Browser</h1>
-            <Link href="./">
-                <a className="my-8 block w-24 text-center text-xl font-semibold border-2 border-black py-2 bg-gray-300">Home</a>
-            </Link>
             <input type="text" className="bg-blue-300 py-2 px-4" value={search} onChange={(event) => setSearch(event.target.value)} />
             <table>
                 <thead>

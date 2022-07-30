@@ -3,38 +3,30 @@ import Head from "next/head";
 import Link from 'next/link';
 import Board from "../components/Board";
 import { trpc } from "../utils/trpc";
-import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
-    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl673mstt0010q4vzw0zpzj8n"], { staleTime: Infinity });
-    const { data: randomLevel, isLoading: randomLevelLoading } = trpc.useQuery(["level.fetchRandom"]);
-    // window.matchMedia("(min-width: 768px)").matches
-
-    const router = useRouter();
+    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl682cf9d9191q4vzru0eo6uo"], { staleTime: Infinity });
 
     return (
         <>
             <Head>
-                <title>Picross Clone</title>
+                <title>Nonograms</title>
                 <meta name="description" content="A simple Picross clone." />
             </Head>
 
-            <div className="flex flex-col items-center lg:justify-center h-full">
-                <header className="font-semibold text-5xl text-center">Picross</header>
-                <div className="my-24">
-                    <Board levelData={levelData || null} size={400} />
-                    {levelData === null && <div className="text-center text-4xl font-semibold">Loading...</div>}
+            <div className="h-full min-h-fit flex flex-col items-center justify-evenly py-4">
+                <h2 className="text-3xl lg:text-4xl my-4 text-center">A simple nonogram/picross game</h2>
+                <div className="my-4">
+                    <Board levelData={levelData || null} size={800} />
                 </div>
-                <div className="flex flex-col lg:flex-row items-center">
-                    <Link href="./browse">
-                        <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Browse Puzzles</a>
-                    </Link>
-                    <Link href={`./puzzle/${randomLevel?.id}`}>
-                        <a className={`w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300 mx-8 ${randomLevelLoading ? 'opacity-20' : ''}`}>Random Puzzle</a>
-                    </Link>
-                    <Link href="./editor">
-                        <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Create Puzzle</a>
-                    </Link>
+                <div className="text-2xl text-center my-4">
+                    Developed by <Link href="https://kiralu.dev"><a className="text-blue-400">Kira Lu</a></Link>
+                    <br /><br />
+                    Built with the <Link href="https://github.com/t3-oss/create-t3-app"><a className="text-blue-400">T3</a></Link> stack
+                    <br />
+                    (Typescript, tRPC, tailwindcss, Next.js, Prisma, MySQL)
+                    <br /><br />
+                    Deployed on <Link href="https://vercel.com/"><a className="text-blue-400">Vercel</a></Link> serverlessly.
                 </div>
             </div>
         </>

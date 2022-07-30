@@ -149,7 +149,7 @@ const Board = (props: {
     return (
         <>
             <div>
-                <table className={`relative bg-sky-700 my-4 ${styles.board}`}>
+                <table className={`relative bg-sky-700 ${styles.board}`}>
                     <tbody>
                         <tr>
                             <td></td>

@@ -141,7 +141,7 @@ const Editor: NextPage = () => {
                     <button className="p-2 border-2 border-black text-2xl bg-white" type="submit">Submit</button>
                 </form>
             </div>}
-            <div className="h-full flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
                 <header className="py-8 px-8 font-semibold text-5xl mb-20 text-center">Custom Puzzle</header>
                 <div className="flex flex-row justify-between items-center w-96">
                     <button className="relative w-8 h-8 lg:w-12 lg:h-12 border-2 border-black bg-gray-200">
@@ -184,15 +184,10 @@ const Editor: NextPage = () => {
                         )}
                     </tbody>
                 </table>
-                <div className="flex flex-row justify-between w-64">
-                    <Link href="./">
-                        <a className="block w-24 text-center text-xl font-semibold border-2 border-black py-2 bg-gray-300">Back</a>
-                    </Link>
-                    <button className="w-24 text-center text-xl font-semibold border-2 border-black py-2 bg-gray-300"
-                        onClick={() => setNameModalOpen(true)}
-                    > Submit
-                    </button>
-                </div>
+                <button className="w-24 text-center text-xl font-semibold border-2 border-black py-2 bg-gray-300"
+                    onClick={() => setNameModalOpen(true)}
+                > Submit
+                </button>
             </div>
         </>
     );

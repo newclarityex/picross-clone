@@ -4,9 +4,17 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import "../styles/globals.css";
+import TheNavbar from "../components/TheNavbar";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-    return <Component {...pageProps} />;
+    return <div className="h-full flex flex-col">
+        <div className="">
+            <TheNavbar />
+        </div>
+        <div className="flex-grow">
+            <Component {...pageProps} />
+        </div>
+    </div>;
 };
 
 const getBaseUrl = () => {
