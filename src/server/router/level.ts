@@ -5,8 +5,9 @@ import type { Prisma } from ".prisma/client";
 export const levelRouter = createRouter()
     .mutation("create", {
         input: z.object({
-            name: z.string(),
+            name: z.string().min(1).max(64),
             data: z.array(z.array(z.string().nullable())),
+            unlisted: z.boolean(),
         }),
         resolve: async ({ ctx, input }) => {
             const { name, data } = input;
@@ -14,6 +15,7 @@ export const levelRouter = createRouter()
                 data: {
                     name,
                     data: data as Prisma.JsonArray,
+                    unlisted: input.unlisted,
                 },
             });
             return level;
@@ -49,7 +51,8 @@ export const levelRouter = createRouter()
     .query("fetchInfinite", {
         input: z.object({
             limit: z.number().min(1).max(100).nullish(),
-            cursor: z.number().nullish()
+            cursor: z.number().nullish(),
+            search: z.string().nullish(),
         }),
         async resolve({ ctx, input }) {
             const limit = input.limit ?? 50;
@@ -58,6 +61,7 @@ export const levelRouter = createRouter()
                 take: limit + 1, // get an extra item at the end which we'll use as next cursor
                 where: {
                     unlisted: false,
+                    ...(input.search ? { name: { contains: input.search } } : {}),
                 },
                 select: {
                     id: true,

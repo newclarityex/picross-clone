@@ -6,7 +6,7 @@ import { trpc } from "../utils/trpc";
 import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
-    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl5vfukjw000970vzg2q3pq4h"], { staleTime: Infinity });
+    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl673mstt0010q4vzw0zpzj8n"], { staleTime: Infinity });
     const { data: randomLevel, refetch: refetchRandomLevel } = trpc.useQuery(["level.fetchRandom"], { staleTime: Infinity });
     // window.matchMedia("(min-width: 768px)").matches
 

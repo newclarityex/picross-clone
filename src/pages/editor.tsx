@@ -78,13 +78,18 @@ const Editor: NextPage = () => {
     }
 
     const [nameModalOpen, setNameModalOpen] = useState(false);
-    const [name, setName] = useState("");
+    const [formData, setFormData] = useState({
+        name: "",
+        unlisted: false,
+    });
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (name === "") return;
+        if (formData.name === "") return;
         mutation.mutate({
-            name,
-            data: grid
+            name: formData.name,
+            data: grid,
+            unlisted: formData.unlisted,
         });
         setNameModalOpen(false);
         setGrid(createEmptyGrid(width, height));
@@ -101,8 +106,15 @@ const Editor: NextPage = () => {
                     <button className="absolute top-0 right-2 text-2xl" onClick={() => setNameModalOpen(false)}>x</button>
                     <h2 className="font-semibold text-2xl">Submit Puzzle</h2>
                     <br />
-                    <input className="block p-2 border-2 border-black text-center text-xl" type="text" placeholder="Name" required value={name} onChange={(event) => setName(event.target.value)} />
+                    <input className="block p-2 border-2 border-black text-center text-xl" type="text" placeholder="Name" required value={formData.name}
+                        maxLength={64}
+                        onChange={(event) => setFormData({ ...formData, name: event.target.value })} />
                     <br />
+                    <label className="block p-2 border-2 border-black text-center text-xl">
+                        <input type="checkbox" checked={formData.unlisted}
+                            onChange={(event) => setFormData({ ...formData, unlisted: event.target.checked })} />
+                        Unlisted
+                    </label>
                     <button className="p-2 border-2 border-black text-2xl bg-white" type="submit">Submit</button>
                 </form>
             </div>}
