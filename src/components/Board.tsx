@@ -1,6 +1,5 @@
 import styles from "./Board.module.css";
 import { useEffect, useState } from "react";
-import { trpc } from "../utils/trpc";
 import type { Level } from "@prisma/client";
 
 interface Cell {
@@ -13,7 +12,7 @@ const Board = (props: {
     size: number;
 } = {
         levelData: null,
-        size: 1000
+        size: 1
     }) => {
 
     const generateEmptyGrid = (grid: (string | null)[][]): Cell[][] => {
@@ -33,7 +32,23 @@ const Board = (props: {
     const yClues = clues[1];
     const totalWidth = xClues.length + grid.length;
     const totalHeight = yClues.length + grid.length;
-    const cellSize = props.size / Math.max(totalWidth, totalHeight);
+
+    const sizes = [
+        {
+            cell: 400,
+            font: "1rem",
+        },
+        {
+            cell: 700,
+            font: "1.2rem",
+        },
+        {
+            cell: 900,
+            font: "1.5rem",
+        },
+    ]
+    const cellSize = sizes[props.size]!.cell / Math.max(totalWidth, totalHeight);
+    const fontSize = sizes[props.size]!.font;
 
     useEffect(() => {
         const newGrid = generateEmptyGrid(props.levelData?.data as (string | null)[][] || []);
@@ -130,6 +145,8 @@ const Board = (props: {
     }
 
     const handlePointerDown = (event: React.PointerEvent<HTMLTableCellElement>, rowIndex: number, columnIndex: number) => {
+        console.log(event);
+
         if (event.buttons === 1) {
             const row = grid[rowIndex];
             if (row === undefined) return;
@@ -154,7 +171,10 @@ const Board = (props: {
                         <tr>
                             <td></td>
                             {yClues?.map((clue, i) => {
-                                return <th className={`text-2xl transition-colors font-semibold text-center align-bottom bg-sky-900 ${yCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`} key={`yClue-${i}`}>
+                                return <th
+                                    className={`transition-colors font-semibold text-center align-bottom bg-sky-900 ${yCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}
+                                    style={{ fontSize: fontSize }}
+                                    key={`yClue-${i}`}>
                                     {clue.map((count, j) =>
                                         <div key={`yClue-${i}-${j}`} className='grid place-items-center' style={{ width: cellSize, height: cellSize }}>
                                             <div>{count}</div></div>
@@ -163,8 +183,8 @@ const Board = (props: {
                             })}
                         </tr>
                         {grid.map((row, i) => {
-                            return <tr className="relative" key={`row-${i}`}>
-                                <th className={`text-2xl transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 ${xCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}>
+                            return <tr className="relative" key={`row-${i}`} style={{ fontSize: fontSize }}>
+                                <th className={`transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 ${xCluesFullfilled[i] ? 'text-green-500' : 'text-gray-400'}`}>
                                     {xClues?.[i]?.map((count, j) =>
                                         <div key={`xClue-${i}-${j}`} className="grid place-items-center" style={{ width: cellSize, height: cellSize }}>
                                             <div>{count}</div></div>

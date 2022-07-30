@@ -3,9 +3,12 @@ import Head from "next/head";
 import Link from 'next/link';
 import Board from "../components/Board";
 import { trpc } from "../utils/trpc";
+import useMediaQuery from "../hooks/useMediaQuery";
 
 const Home: NextPage = () => {
-    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl682cf9d9191q4vzru0eo6uo"], { staleTime: Infinity });
+    const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl673mstt0010q4vzw0zpzj8n"], { staleTime: Infinity });
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     return (
         <>
@@ -17,7 +20,7 @@ const Home: NextPage = () => {
             <div className="h-full min-h-fit flex flex-col items-center justify-evenly py-4">
                 <h2 className="text-3xl lg:text-4xl my-4 text-center">A simple nonogram/picross game</h2>
                 <div className="my-4">
-                    <Board levelData={levelData || null} size={800} />
+                    <Board levelData={levelData || null} size={isMobile ? 0 : 2} />
                 </div>
                 <div className="text-2xl text-center my-4">
                     Developed by <Link href="https://kiralu.dev"><a className="text-blue-400">Kira Lu</a></Link>
