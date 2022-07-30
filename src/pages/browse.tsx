@@ -75,7 +75,9 @@ const Puzzle: NextPage = () => {
                     })}
                 </tbody>
             </table>
-
+            <Link href="./">
+                <a className="my-8 block w-24 text-center text-xl font-semibold border-2 border-black py-2 bg-gray-300">Home</a>
+            </Link>
         </div>
     </>
 }

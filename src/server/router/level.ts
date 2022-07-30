@@ -35,7 +35,11 @@ export const levelRouter = createRouter()
     })
     .query("fetchRandom", {
         async resolve({ ctx }) {
-            const levelCount = await ctx.prisma.level.count();
+            const levelCount = await ctx.prisma.level.count({
+                where: {
+                    unlisted: false,
+                },
+            });
             const skip = Math.floor(Math.random() * levelCount);
             return (await ctx.prisma.level.findMany(
                 {

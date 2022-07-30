@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
     const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(["level.fetchById", "cl673mstt0010q4vzw0zpzj8n"], { staleTime: Infinity });
-    const { data: randomLevel, refetch: refetchRandomLevel } = trpc.useQuery(["level.fetchRandom"], { staleTime: Infinity });
+    const { data: randomLevel, isLoading: randomLevelLoading } = trpc.useQuery(["level.fetchRandom"]);
     // window.matchMedia("(min-width: 768px)").matches
 
     const router = useRouter();
@@ -29,12 +29,9 @@ const Home: NextPage = () => {
                     <Link href="./browse">
                         <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Browse Puzzles</a>
                     </Link>
-                    <button onClick={
-                        async () => {
-                            await refetchRandomLevel();
-                            router.push(`./puzzle/${randomLevel?.id}`);
-                        }
-                    } className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300 lg:mx-12 my-12 lg:my-0">Random Puzzle</button>
+                    <Link href={`./puzzle/${randomLevel?.id}`}>
+                        <a className={`w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300 mx-8 ${randomLevelLoading ? 'opacity-20' : ''}`}>Random Puzzle</a>
+                    </Link>
                     <Link href="./editor">
                         <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Create Puzzle</a>
                     </Link>
