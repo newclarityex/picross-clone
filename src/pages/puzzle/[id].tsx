@@ -19,7 +19,7 @@ const Puzzle: NextPage = () => {
             <meta name="description" content="A simple Picross clone." />
         </Head>
         <div className="grid h-full w-full grid-cols-2">
-            <div className="flex items-center py-20 px-20">
+            <div className="flex items-center justify-center">
                 {!levelLoading && <Board levelData={levelData} size={1000} />}
                 {levelLoading && <div className="text-center text-4xl font-semibold">Loading...</div>}
             </div>

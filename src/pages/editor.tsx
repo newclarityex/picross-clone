@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { BlockPicker } from 'react-color';
 
 const Editor: NextPage = () => {
-    const mutation = trpc.useMutation(["level.create"]);
+    const { mutate, data, isLoading } = trpc.useMutation(["level.create"]);
     const [selectedColor, setSelectedColor] = useState('#dddddd');
     const [width, setWidth] = useState(5);
     const [height, setHeight] = useState(5);
@@ -67,14 +67,12 @@ const Editor: NextPage = () => {
     useEffect(() => {
         window.addEventListener("pointerup", () => {
             setPointerFill(null);
-        }
-            , { once: true });
+        }, { once: true });
     }, []);
 
     const [pickerOpen, setPickerOpen] = useState(false);
     const handleChangeComplete = (color: any) => {
-        setSelectedColor(color.hex)
-        setPickerOpen(false);
+        setSelectedColor(color.hex);
     }
 
     const [nameModalOpen, setNameModalOpen] = useState(false);
@@ -83,17 +81,29 @@ const Editor: NextPage = () => {
         unlisted: false,
     });
 
+    const [isSaving, setIsSaving] = useState(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (formData.name === "") return;
-        mutation.mutate({
+        mutate({
             name: formData.name,
             data: grid,
             unlisted: formData.unlisted,
         });
         setNameModalOpen(false);
         setGrid(createEmptyGrid(width, height));
+        setIsSaving(true);
+        setFormData({
+            name: "",
+            unlisted: false,
+        });
     };
+
+    const [copied, setCopied] = useState(false);
+    function updateClipboard(text: string) {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+    }
 
     return (
         <>
@@ -101,6 +111,19 @@ const Editor: NextPage = () => {
                 <title>Picross Editor</title>
                 <meta name="description" content="Create custom nonogram puzzles to play and share!" />
             </Head>
+            {data && isSaving && !isLoading && <div className="absolute h-full w-full grid place-items-center z-50 bg-black/80">
+                <div className="absolute z-10 p-4 flex flex-col items-center bg-gray-200 border-2 border-black">
+                    <h1 className="text-4xl font-semibold my-2">Level Created!</h1>
+                    <h2 className="text-2xl my-2">{data.name}</h2>
+                    <Link href={`/puzzle/${data.id}`}>
+                        <a className="text-blue-400">
+                            {location.protocol + '//' + location.host}/puzzle/{data.id}
+                        </a>
+                    </Link>
+                    <button onClick={() => updateClipboard(`${location.protocol + '//' + location.host}/puzzle/${data.id}`)}>{copied ? 'Copied' : 'Copy Link'}</button>
+                    <button onClick={() => { setIsSaving(false), setCopied(false) }}>Finish</button>
+                </div>
+            </div>}
             {nameModalOpen && <div className="absolute h-full w-full grid place-items-center z-40 bg-black/80">
                 <form className="absolute z-10 p-4 flex flex-col items-center bg-gray-200 border-2 border-black" onSubmit={handleSubmit}>
                     <button className="absolute top-0 right-2 text-2xl" onClick={() => setNameModalOpen(false)}>x</button>
@@ -123,7 +146,7 @@ const Editor: NextPage = () => {
                 <div className="flex flex-row justify-between items-center w-96">
                     <button className="relative w-8 h-8 lg:w-12 lg:h-12 border-2 border-black bg-gray-200">
                         <div className="w-full h-full" style={{ backgroundColor: selectedColor === null ? '' : selectedColor }} onClick={() => setPickerOpen(!pickerOpen)}></div>
-                        {pickerOpen && <BlockPicker className="absolute top-14 left-1/2 -translate-x-1/2 z-10" onChangeComplete={handleChangeComplete} color={selectedColor} />}
+                        {pickerOpen && <BlockPicker className="absolute top-14 left-1/2 -translate-x-1/2 z-20" onChangeComplete={handleChangeComplete} color={selectedColor} />}
                     </button>
                     <div className="flex flex-row items-center justify-center">
                         <button className="border-2 border-black w-8 h-8 lg:w-12 lg:h-12 bg-gray-300 grid place-items-center disabled:opacity-70"
