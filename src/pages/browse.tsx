@@ -61,7 +61,7 @@ const Puzzle: NextPage = () => {
                     <tr>
                         <th className="w-96">Name</th>
                         <th className="w-40">Date</th>
-                        <th className="w-20">Stars</th>
+                        {/* <th className="w-20">Stars</th> */}
                     </tr>
                 </thead>
                 <tbody className="text-center">
