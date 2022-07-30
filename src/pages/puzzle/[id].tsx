@@ -11,6 +11,7 @@ const Puzzle: NextPage = () => {
     const { data, refetch } = trpc.useQuery(["level.fetchById", id as string], { staleTime: Infinity });
     const grid = (data?.data || []) as (string | null)[][]
     const levelData = data || null;
+    const { data: randomLevel, refetch: refetchRandomLevel } = trpc.useQuery(["level.fetchRandom"], { staleTime: Infinity });
 
     return <>
         <Head>
@@ -26,9 +27,16 @@ const Puzzle: NextPage = () => {
                 <header className="font-semibold text-4xl">&quot;{data?.name}&quot;</header>
                 <h2 className="font-semibold text-3xl">Size: {`${grid.length || 0}x${grid[0]?.length || 0}`}</h2>
                 <div className="flex flex-col lg:flex-row items-center">
-                    <button className="w-56 text-center font-semibold border-2 border-black py-2 text-xl bg-gray-300">Browse Puzzles</button>
-                    <button className="w-56 text-center font-semibold border-2 border-black py-2 text-xl bg-gray-300 lg:mx-12 my-12 lg:my-0">Random Puzzle</button>
-                    <Link href="./editor">
+                    <Link href="../browse">
+                        <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Browse Puzzles</a>
+                    </Link>
+                    <button onClick={
+                        async () => {
+                            await refetchRandomLevel();
+                            router.push(`../puzzle/${randomLevel?.id}`);
+                        }
+                    } className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300 lg:mx-12 my-12 lg:my-0">Random Puzzle</button>
+                    <Link href="../editor">
                         <a className="w-56 text-center block font-semibold border-2 border-black py-2 text-xl bg-gray-300">Create Puzzle</a>
                     </Link>
                 </div>
