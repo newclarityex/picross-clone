@@ -1,0 +1,23 @@
+.slider {
+    appearance: none;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+}
+
+.slider::-webkit-slider-thumb {
+    pointer-events: all;
+    border-radius: 0px;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    pointer-events: all;
+    border-radius: 0px;
+}
+
+.slider::-moz-range-thumb:hover {
+    cursor: pointer;
+}

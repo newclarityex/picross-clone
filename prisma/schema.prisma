@@ -18,6 +18,6 @@ model Level {
     name      String
     createdAt DateTime @default(now())
     data      Json
-    stars     Int      @default(0)
     unlisted  Boolean  @default(false)
+    size      Int      @default(4)
 }

@@ -11,9 +11,12 @@ export const levelRouter = createRouter()
         }),
         resolve: async ({ ctx, input }) => {
             const { name, data } = input;
+            const size = data.length;
+            if (size === 0 || (data[0] as string[]).length !== size) return;
             const level = await ctx.prisma.level.create({
                 data: {
                     name,
+                    size,
                     data: data as Prisma.JsonArray,
                     unlisted: input.unlisted,
                 },
@@ -57,22 +60,26 @@ export const levelRouter = createRouter()
             limit: z.number().min(1).max(100).nullish(),
             cursor: z.number().nullish(),
             search: z.string().nullish(),
+            minSize: z.number().min(4).max(15),
+            maxSize: z.number().min(4).max(15),
         }),
         async resolve({ ctx, input }) {
             const limit = input.limit ?? 50;
             const { cursor } = input;
+
             const items = await ctx.prisma.level.findMany({
                 take: limit + 1, // get an extra item at the end which we'll use as next cursor
                 where: {
                     unlisted: false,
                     ...(input.search ? { name: { contains: input.search } } : {}),
+                    ...({ size: { gte: input.minSize, lte: input.maxSize } }),
                 },
                 select: {
                     id: true,
                     index: true,
                     name: true,
                     createdAt: true,
-                    stars: true,
+                    size: true,
                 },
                 cursor: cursor ? { index: cursor } : undefined,
                 orderBy: {
@@ -87,7 +94,7 @@ export const levelRouter = createRouter()
             }
 
             return {
-                items: items.map(item => ({ id: item.id, name: item.name, createdAt: item.createdAt, stars: item.stars })),
+                items: items.map(item => ({ id: item.id, name: item.name, createdAt: item.createdAt, size: item.size })),
                 nextCursor,
             };
         }
