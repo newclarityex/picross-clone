@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import Link from 'next/link'
 import { trpc } from '../../utils/trpc'
 import Board from '../../components/Board'
 import useMediaQuery from '../../hooks/useMediaQuery'
@@ -17,15 +16,15 @@ const Puzzle: NextPage = () => {
     return <>
         <Head>
             <title>{data?.name}</title>
-            <meta name="description" content="A simple Picross clone." />
+            <meta name="description" content={`A ${data?.size} by ${data?.size} nonogram puzzle.`} />
         </Head>
         <div className="flex h-full w-full flex-col items-center justify-evenly">
             <header className="text-4xl my-8 text-center">&ldquo;{data?.name}&rdquo;</header>
-            <div className="my-8">
+            <div className="my-2">
                 {!levelLoading && <Board levelData={levelData} size={isMobile ? 0 : 2} />}
             </div>
             {/* <button className="mx-2 text-2xl" onClick={() => setIsStarred(!isStarred)}>{isStarred ? 'Remove Star' : 'Star'}</button> */}
-            <h2 className="text-3xl my-8">Size: {`${grid.length || 0}x${grid[0]?.length || 0}`}</h2>
+            <h2 className="text-3xl my-8">Size: {`${data?.size}x${data?.size}`}</h2>
         </div >
     </>
 }
