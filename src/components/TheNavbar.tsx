@@ -10,7 +10,7 @@ const TheNavbar = () => {
     const [navOpen, setNavOpen] = useState(false);
 
     return <>
-        <button className={`absolute top-2 right-2 lg:hidden w-12 h-12 bg-blue-200 z-10`} onClick={() => setNavOpen(true)}>≡</button>
+        <button className={`absolute top-2 right-2 lg:hidden w-12 h-12 bg-blue-200 z-10 text-2xl`} onClick={() => setNavOpen(true)}>≡</button>
         <div className={`fixed top-0 left-0 w-full h-full bg-black/20 z-20 ${navOpen ? 'block lg:hidden' : 'hidden'}`} onClick={() => setNavOpen(false)} />
         <nav className={`
             ${navOpen ? '' : '-translate-x-full lg:translate-x-0'} 
