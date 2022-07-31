@@ -102,6 +102,19 @@ const Editor: NextPage = () => {
         });
     };
 
+    function clearGrid() {
+        const newGrid = [...grid];
+        for (let i = 0; i < height; i++) {
+            const row = newGrid[i];
+            for (let j = 0; j < width; j++) {
+                if (row === undefined) continue;
+                if (row[j] === undefined) continue;
+                row[j] = null;
+            }
+        }
+        setGrid(newGrid);
+    }
+
     return (
         <>
             <Head>
@@ -164,11 +177,11 @@ const Editor: NextPage = () => {
                     </div>
 
                     <button className="text-xl font-semibold border-2 border-black w-8 h-8 lg:w-12 lg:h-12 bg-gray-300"
-                        onClick={() => setGrid(createEmptyGrid(width, height))}
+                        onClick={clearGrid}
                     > ⟳
                     </button>
                 </div>
-                <table className="relative my-8">
+                <table className="relative my-8 hover:cursor-pointer" style={{ userSelect: "none" }}>
                     <tbody>
                         {grid.map((row, i) =>
                             <tr key={`row-${i}`}>
