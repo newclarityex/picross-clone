@@ -137,14 +137,14 @@ const Board = (props: {
         }
     }
 
-    const handlePointerOver = (event: React.PointerEvent<HTMLTableCellElement>, row: number, column: number) => {
+    const handleMouseOver = (event: React.MouseEvent<HTMLTableCellElement>, row: number, column: number) => {
         if (pointerFill === null) return;
         if (event.buttons === 1) {
             changeCell(row, column, pointerFill);
         }
     }
 
-    const handlePointerDown = (event: React.PointerEvent<HTMLTableCellElement>, rowIndex: number, columnIndex: number) => {
+    const handleMouseDown = (event: React.MouseEvent<HTMLTableCellElement>, rowIndex: number, columnIndex: number) => {
         console.log(event);
 
         if (event.buttons === 1) {
@@ -196,8 +196,8 @@ const Board = (props: {
                                     const cell = row[j];
                                     if (cell === undefined) return null;
                                     return <td key={`cell-${i}-${j}`} className={`${styles.block} ${!cell.selected || completed ? '' : styles.selected}`} style={{ backgroundColor: (completed && cell.value) ? cell.value : '', width: cellSize, height: cellSize }}
-                                        onPointerOver={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerOver(event, i, j)}
-                                        onPointerDown={(event: React.PointerEvent<HTMLTableCellElement>) => handlePointerDown(event, i, j)}
+                                        onMouseOver={(event: React.MouseEvent<HTMLTableCellElement>) => handleMouseOver(event, i, j)}
+                                        onMouseDown={(event: React.MouseEvent<HTMLTableCellElement>) => handleMouseDown(event, i, j)}
                                     >
                                     </td>;
                                 })}

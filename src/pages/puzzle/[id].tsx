@@ -19,16 +19,13 @@ const Puzzle: NextPage = () => {
             <title>{data?.name}</title>
             <meta name="description" content="A simple Picross clone." />
         </Head>
-        <div className="grid w-full grid-cols-2">
-            <div className="flex items-center justify-center">
+        <div className="flex h-full w-full flex-col items-center justify-evenly">
+            <header className="text-4xl my-8 text-center">&ldquo;{data?.name}&rdquo;</header>
+            <div className="my-8">
                 {!levelLoading && <Board levelData={levelData} size={isMobile ? 0 : 2} />}
-                {levelLoading && <div className="text-center text-4xl font-semibold">Loading...</div>}
             </div>
-            <div className="flex flex-col justify-evenly items-center">
-                <header className="font-semibold text-4xl">&ldquo;{data?.name}&rdquo;</header>
-                {/* <button className="mx-2 text-2xl" onClick={() => setIsStarred(!isStarred)}>{isStarred ? 'Remove Star' : 'Star'}</button> */}
-                <h2 className="font-semibold text-3xl">Size: {`${grid.length || 0}x${grid[0]?.length || 0}`}</h2>
-            </div>
+            {/* <button className="mx-2 text-2xl" onClick={() => setIsStarred(!isStarred)}>{isStarred ? 'Remove Star' : 'Star'}</button> */}
+            <h2 className="text-3xl my-8">Size: {`${grid.length || 0}x${grid[0]?.length || 0}`}</h2>
         </div >
     </>
 }
