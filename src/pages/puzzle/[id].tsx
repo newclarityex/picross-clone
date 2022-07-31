@@ -43,7 +43,7 @@ const Puzzle = (
     return <>
         <Head>
             <title>{data?.name}</title>
-            <meta name="description" content={`A ${data?.size} by ${data?.size} nonogram puzzle.`} />
+            <meta name="description" content={`${data?.size} x ${data?.size} nonogram/picross puzzle.`} />
         </Head>
         <div className="flex h-full w-full flex-col items-center justify-evenly">
             <header className="text-4xl my-8 text-center">&ldquo;{data?.name}&rdquo;</header>
