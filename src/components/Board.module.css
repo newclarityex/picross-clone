@@ -1,8 +1,8 @@
 .block {
     position: relative;
     overflow: hidden;
-    background: rgba(25, 25, 25, 1);
-    transition: all 0.3s ease-in-out;
+    background-color: rgba(25, 25, 25, 1);
+    transition: background-color 0.3s ease-in-out;
 }
 
 .block:hover {
@@ -11,7 +11,7 @@
 
 .block.selected {
     background-color: rgb(179, 179, 179);
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .block::after {
@@ -25,7 +25,7 @@
     background-color: rgb(179, 179, 179);
     width: 0%;
     height: 0%;
-    transition: 0.25s;
+    transition: width 0.25s, height 0.25s;
 }
 
 .block.selected::after {
