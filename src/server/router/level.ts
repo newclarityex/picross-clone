@@ -83,7 +83,7 @@ export const levelRouter = createRouter()
                 },
                 cursor: cursor ? { index: cursor } : undefined,
                 orderBy: {
-                    index: 'asc',
+                    index: 'desc',
                 },
             })
 
