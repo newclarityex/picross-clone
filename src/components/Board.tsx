@@ -36,19 +36,16 @@ const Board = (props: {
     const sizes = [
         {
             cell: 400,
-            font: "1rem",
         },
         {
             cell: 700,
-            font: "1.2rem",
         },
         {
             cell: 900,
-            font: "1.5rem",
         },
     ]
     const cellSize = sizes[props.size]!.cell / Math.max(totalWidth, totalHeight);
-    const fontSize = sizes[props.size]!.font;
+    const fontSize = cellSize / 2.5;
 
     useEffect(() => {
         const newGrid = generateEmptyGrid(props.levelData?.data as (string | null)[][] || []);
