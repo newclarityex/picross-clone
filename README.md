@@ -1,3 +1,2 @@
-# Create T3 App
-
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+# Picross Clone
+A clone of the popular puzzle game Picross/Nonograms made with the T3 stack(Typescript, tRPC, tailwindcss, Next.js, Prisma, MySQL)
